@@ -23,6 +23,12 @@ RUN uv sync --frozen --no-dev --no-editable
 
 FROM python:3.13-slim-trixie
 
+# Nextflow's .command.run polls `ps` to collect per-task CPU and memory metrics; the slim base
+# image does not ship it. Installed before the venv copy so this layer caches across code changes.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends procps \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /app/.venv /app/.venv
 ENV PATH="/app/.venv/bin:$PATH"
 
