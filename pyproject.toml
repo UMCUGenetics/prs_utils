@@ -1,0 +1,34 @@
+[project]
+name = "python-template"
+version = "0.1.0"
+description = "Python template project."
+readme = "README.md"
+authors = [
+    { name = "Bioinformatica Genetica", email = "bioinformatica-genetica@umcutrecht.nl" }
+]
+requires-python = "~=3.14.0"
+dependencies = [
+    "typer>=0.26.8",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.20",
+]
+
+[project.scripts]
+python-template = "python_template.cli:cli"
+
+[build-system]
+requires = ["uv_build>=0.11.27,<0.12"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 127
+
+[tool.uv]
+required-version = ">=0.11.28"
+package=true
+exclude-newer = "7 days"
