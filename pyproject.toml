@@ -1,14 +1,13 @@
 [project]
-name = "prs-utils"
-version = "1.0.0"
-description = "Utility commands used by the UMCUGenetics prsutils Nextflow modules."
+name = "python-template"
+version = "0.1.0"
+description = "Python template project."
 readme = "README.md"
 authors = [
     { name = "Bioinformatica Genetica", email = "bioinformatica-genetica@umcutrecht.nl" }
 ]
-requires-python = ">=3.12"
+requires-python = "~=3.14.0"
 dependencies = [
-    "pandas>=2.2",
     "typer>=0.26.8",
 ]
 
@@ -20,7 +19,7 @@ dev = [
 ]
 
 [project.scripts]
-prs-utils = "prs_utils.cli:cli"
+python-template = "python_template.cli:cli"
 
 [build-system]
 requires = ["uv_build>=0.11.27,<0.12"]
