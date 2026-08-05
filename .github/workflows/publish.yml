@@ -8,13 +8,20 @@ permissions:
   packages: write
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/prs-utils
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+
+      - name: Resolve the image name
+        # The owner is mixed case (UMCUGenetics) but Docker repository names must be lowercase.
+        # metadata-action lowercases its own output, plain `docker` commands do not -- so lowercase
+        # it once here and let every step share it.
+        run: |
+          owner=$(echo "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')
+          echo "IMAGE_NAME=${owner}/prs-utils" >> "$GITHUB_ENV"
 
       - name: Set up QEMU
         # Needed to build the linux/arm64 image on an amd64 runner.
