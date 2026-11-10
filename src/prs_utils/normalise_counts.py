@@ -1,9 +1,19 @@
+"""Tools for normalising polygenic risk scores."""
+
 import argparse
 
 import pandas as pd
 
 
 def get_args(argv=None):
+    """Define and parse command-line options.
+
+    Args:
+        argv: Optional command-line arguments.
+
+    Returns:
+        Parsed command-line options.
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("--PRS", help="Table with PRS scores")
     parser.add_argument("--mu", help="Population average for calculating Z-scores", required=True, type=float)
@@ -14,12 +24,27 @@ def get_args(argv=None):
 
 
 def score_to_z_score(scores, mu, SD):
+    """Convert scores to population z-scores.
+
+    Args:
+        scores: Score values to normalise.
+        mu: Population mean.
+        SD: Population standard deviation.
+
+    Returns:
+        Z-scores corresponding to the input values.
+    """
     z_scores = (scores - mu) / SD
 
     return z_scores
 
 
 def main(argv=None):
+    """Normalise scores from an input table and write the result.
+
+    Args:
+        argv: Optional command-line arguments.
+    """
     args = get_args(argv)
 
     df = pd.read_csv(args.PRS, sep="\t")
