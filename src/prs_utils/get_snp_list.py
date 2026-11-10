@@ -35,7 +35,7 @@ def positions_to_tsv(scoring_file, chr_colname, pos_colname, prefix, flank=100):
             if "chr" in str(chrom):
                 chr_prefix = ""
 
-            tsv_line = f"{chr_prefix}{chrom}:{str(start)}-{str(end)}\n"
+            tsv_line = f"{chr_prefix}{chrom}:{start}-{end}\n"
 
             outfile.write(tsv_line)
 
