@@ -20,7 +20,7 @@ def QC_check(
         row: A single row from the merged scores/ancestry DataFrame.
         expected_ancestry: Accepted predicted ancestry group labels.
         conf_threshold: Minimum KNN confidence score to pass ancestry QC.
-        model_matchrate: Fraction of model variants found in the sample (0–1).
+        model_matchrate: Fraction of model variants found in the sample (0-1).
         matchrate_threshold: Minimum required model matchrate to pass QC.
 
     Returns:
