@@ -1,9 +1,9 @@
 """Merge polygenic risk score multiqc results."""
 
 import sys
+from pathlib import Path
 
 import pandas as pd
-from pathlib import Path
 
 sample_palette = ["#e8f0fe", "#ffffff"]  # blue / white — sample stripes
 
