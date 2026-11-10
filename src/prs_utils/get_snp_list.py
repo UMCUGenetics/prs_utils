@@ -3,6 +3,7 @@
 from argparse import ArgumentParser
 
 import pandas as pd
+from pathlib import Path
 
 
 def positions_to_tsv(scoring_file, chr_colname, pos_colname, prefix, flank=100):
@@ -17,7 +18,7 @@ def positions_to_tsv(scoring_file, chr_colname, pos_colname, prefix, flank=100):
     """
     df = pd.read_csv(scoring_file, sep="\t", comment="#")
 
-    with open(f"{prefix}_snplist.list", "w") as outfile:
+    with Path(f"{prefix}_snplist.list").open("w") as outfile:
         for index, row in df.iterrows():
             chrom = row[chr_colname]
             pos = int(row[pos_colname])

@@ -3,6 +3,7 @@
 import sys
 
 import pandas as pd
+from pathlib import Path
 
 sample_palette = ["#e8f0fe", "#ffffff"]  # blue / white — sample stripes
 
@@ -68,7 +69,7 @@ def main(argv=None):
     unique_models = combined["Model"].drop_duplicates().tolist()
     model_bgcols = {m: model_palette[i % len(model_palette)] for i, m in enumerate(unique_models)}
 
-    with open("prs_scores_mqc.tsv", "w") as out:
+    with Path("prs_scores_mqc.tsv").open("w") as out:
         out.write("# id: 'prs-scores'\n")
         out.write("# pconfig:\n")
         out.write("#     only_defined_headers: false\n")
