@@ -1,9 +1,9 @@
 """Create SNP TSV from a scoring file."""
 
 from argparse import ArgumentParser
+from pathlib import Path
 
 import pandas as pd
-from pathlib import Path
 
 
 def positions_to_tsv(scoring_file, chr_colname, pos_colname, prefix, flank=100):
