@@ -100,7 +100,7 @@ def main(argv=None):
     # Open IO
     with args.output as oh:
         # TSV reader
-        reader = csv.DictReader([header] + body, delimiter="\t")
+        reader = csv.DictReader([header, *body], delimiter="\t")
 
         # collect contigs to emit header contig lines later
         contigs = set()
