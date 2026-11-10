@@ -23,18 +23,18 @@ def get_args(argv=None):
     return parser.parse_args(argv)
 
 
-def score_to_z_score(scores, mu, SD):
+def score_to_z_score(scores, mu, sd):
     """Convert scores to population z-scores.
 
     Args:
         scores: Score values to normalise.
         mu: Population mean.
-        SD: Population standard deviation.
+        sd: Population standard deviation.
 
     Returns:
         Z-scores corresponding to the input values.
     """
-    z_scores = (scores - mu) / SD
+    z_scores = (scores - mu) / sd
 
     return z_scores
 
