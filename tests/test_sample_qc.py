@@ -20,7 +20,7 @@ def test_calc_model_matchrate_sums_only_matched_percentages():
 
 
 def test_qc_check_passes_when_all_thresholds_are_met():
-    row = sample_qc.QC_check(make_row(), ["EUR"], 0.6, 0.9, 0.75)
+    row = sample_qc.qc_check(make_row(), ["EUR"], 0.6, 0.9, 0.75)
 
     assert row["QC status"] == "PASS"
     assert row["QC Comment"] == ""
@@ -36,14 +36,14 @@ def test_qc_check_passes_when_all_thresholds_are_met():
     ],
 )
 def test_qc_check_reports_each_failure_reason(row, matchrate, comment):
-    result = sample_qc.QC_check(row, ["EUR"], 0.6, matchrate, 0.75)
+    result = sample_qc.qc_check(row, ["EUR"], 0.6, matchrate, 0.75)
 
     assert result["QC status"] == "FAIL"
     assert result["QC Comment"] == comment
 
 
 def test_qc_check_joins_multiple_failure_reasons():
-    row = sample_qc.QC_check(make_row(pred_group="AFR", knn_conf=0.1), ["EUR"], 0.6, 0.1, 0.75)
+    row = sample_qc.qc_check(make_row(pred_group="AFR", knn_conf=0.1), ["EUR"], 0.6, 0.1, 0.75)
 
     assert row["QC Comment"] == ("REFERENCE_PANEL_MISMATCH;LOW_REFERENCE_PANEL_CONFIDENCE;INSUFFICIENT_VARIANT_COVERAGE")
 
@@ -68,7 +68,7 @@ def test_main_writes_qc_table(tmp_path):
     )
 
     df = pd.read_csv(output, sep="\t")
-    # "Model Matchrate" is intentionally absent: QC_check writes "Model matchrate" (lowercase m)
+    # "Model Matchrate" is intentionally absent: qc_check writes "Model matchrate" (lowercase m)
     # while the final filter asks for the capitalised name, so pandas drops it. Preserved as-is.
     assert list(df.columns) == [
         "Sample",

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Annotated, List
+from typing import Annotated
 
 import pandas as pd
 import typer
@@ -11,7 +11,7 @@ import typer
 app = typer.Typer(add_completion=False, help="Sample QC for PRS pipeline.")
 
 
-def QC_check(
+def qc_check(
     row: pd.Series, expected_ancestry: list[str], conf_threshold: float, model_matchrate: float, matchrate_threshold: float
 ) -> pd.Series:
     """Assign QC status and comments to a single sample row.
@@ -20,7 +20,7 @@ def QC_check(
         row: A single row from the merged scores/ancestry DataFrame.
         expected_ancestry: Accepted predicted ancestry group labels.
         conf_threshold: Minimum KNN confidence score to pass ancestry QC.
-        model_matchrate: Fraction of model variants found in the sample (0–1).
+        model_matchrate: Fraction of model variants found in the sample (0-1).
         matchrate_threshold: Minimum required model matchrate to pass QC.
 
     Returns:
@@ -106,20 +106,25 @@ def main(
         typer.Option("--conf-threshold", help="Minimum ancestry confidence to pass QC. (default: 0.6)"),
     ] = 0.6,
     expected_ancestry: Annotated[
-        List[str],
+        list[str] | None,
         typer.Option(
             "--expected-ancestry", help="Expected superpopulation label(s). Can be passed multiple times. (default: EUR)"
         ),
-    ] = ["EUR"],
+    ] = None,
     matchrate_threshold: Annotated[
         float,
         typer.Option(
             "--matchrate-threshold",
-            help="Minimum model matchrate (i.e., percentage of variants in the model that are in the sample. (default: 0.75) )",
+            help=(
+                "Minimum model matchrate (i.e., percentage of variants in the model that are in the sample. (default: 0.75) )"
+            ),
         ),
     ] = 0.75,
 ) -> None:
     """Run sample QC checks and write a MultiQC-compatible table."""
+    if expected_ancestry is None:
+        expected_ancestry = ["EUR"]
+
     score_file = pd.read_csv(scores, sep="\t")
     ancestry_file = pd.read_csv(ancestry, sep="\t")
     model_df = pd.read_csv(model_summary, sep=",")
@@ -129,7 +134,7 @@ def main(
     model_matchrate = calc_model_matchrate(model_df)
 
     typer.echo(f"Model matchrate:{model_matchrate}")
-    qc_df = combined_df.apply(QC_check, args=(expected_ancestry, conf_threshold, model_matchrate, matchrate_threshold), axis=1)
+    qc_df = combined_df.apply(qc_check, args=(expected_ancestry, conf_threshold, model_matchrate, matchrate_threshold), axis=1)
 
     qc_df["Sample"] = sample
     qc_df["Model"] = model

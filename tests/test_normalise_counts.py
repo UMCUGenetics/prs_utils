@@ -6,7 +6,7 @@ from prs_utils import normalise_counts
 def test_score_to_z_score():
     scores = pd.Series([1.0, 2.0, 3.0])
 
-    z_scores = normalise_counts.score_to_z_score(scores, mu=2.0, SD=0.5)
+    z_scores = normalise_counts.score_to_z_score(scores, mu=2.0, sd=0.5)
 
     assert list(z_scores) == [-2.0, 0.0, 2.0]
 
