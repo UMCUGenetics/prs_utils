@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Annotated, List
+from typing import Annotated
 
 import pandas as pd
 import typer
@@ -106,7 +106,7 @@ def main(
         typer.Option("--conf-threshold", help="Minimum ancestry confidence to pass QC. (default: 0.6)"),
     ] = 0.6,
     expected_ancestry: Annotated[
-        List[str],
+        list[str],
         typer.Option(
             "--expected-ancestry", help="Expected superpopulation label(s). Can be passed multiple times. (default: EUR)"
         ),
