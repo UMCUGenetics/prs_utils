@@ -115,7 +115,9 @@ def main(
         float,
         typer.Option(
             "--matchrate-threshold",
-            help="Minimum model matchrate (i.e., percentage of variants in the model that are in the sample. (default: 0.75) )",
+            help=(
+                "Minimum model matchrate (i.e., percentage of variants in the model that are in the sample. (default: 0.75) )"
+            ),
         ),
     ] = 0.75,
 ) -> None:
