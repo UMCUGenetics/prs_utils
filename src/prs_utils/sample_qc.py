@@ -106,11 +106,11 @@ def main(
         typer.Option("--conf-threshold", help="Minimum ancestry confidence to pass QC. (default: 0.6)"),
     ] = 0.6,
     expected_ancestry: Annotated[
-        list[str],
+        list[str] | None,
         typer.Option(
             "--expected-ancestry", help="Expected superpopulation label(s). Can be passed multiple times. (default: EUR)"
         ),
-    ] = ["EUR"],
+    ] = None,
     matchrate_threshold: Annotated[
         float,
         typer.Option(
@@ -122,6 +122,9 @@ def main(
     ] = 0.75,
 ) -> None:
     """Run sample QC checks and write a MultiQC-compatible table."""
+    if expected_ancestry is None:
+        expected_ancestry = ["EUR"]
+
     score_file = pd.read_csv(scores, sep="\t")
     ancestry_file = pd.read_csv(ancestry, sep="\t")
     model_df = pd.read_csv(model_summary, sep=",")
