@@ -1,8 +1,18 @@
+"""Convert polygenic score data to VCF."""
+
 import argparse
 import csv
 
 
 def parse_args(argv=None):
+    """Define and parse arguments from command-line.
+
+    Args:
+        argv: Optional command-line arguments; defaults to None.
+
+    Returns:
+        Parsed command-line options.
+    """
     p = argparse.ArgumentParser(
         description="Convert a PGS Catalog scoring CSV/TSV to a VCF (REF=other_allele, ALT=effect_allele)."
     )
@@ -14,6 +24,14 @@ def parse_args(argv=None):
 
 
 def read_meta(fh):
+    """Read metadata, the column header, and remaining rows from a scoring file.
+
+    Args:
+        fh: Open scoring file handle.
+
+    Returns:
+        A tuple of metadata, the header line, and remaining body lines.
+    """
     meta = {}
     header = None
     body_lines = []
@@ -34,6 +52,15 @@ def read_meta(fh):
 
 
 def build_info_fields(row, pgsid):
+    """Build the VCF INFO value for one scoring-file row.
+
+    Args:
+        row: Scoring-file row represented as a mapping.
+        pgsid: Polygenic score identifier.
+
+    Returns:
+        Semicolon-delimited VCF INFO fields.
+    """
     # Build INFO
     weight = (row.get("effect_weight") or "").strip()
     eaf = (row.get("allelefrequency_effect") or "").strip()
@@ -60,6 +87,11 @@ def build_info_fields(row, pgsid):
 
 
 def main(argv=None):
+    """Convert a scoring file to VCF format.
+
+    Args:
+        argv: Optional command-line arguments.
+    """
     args = parse_args(argv)
     meta, header, body = read_meta(args.input)
     pgsid = args.pgsid or meta.get("pgs_id", "PGS_UNKNOWN")
