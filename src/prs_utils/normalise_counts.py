@@ -49,7 +49,7 @@ def main(argv=None):
 
     df = pd.read_csv(args.PRS, sep="\t")
 
-    df["SUM_Z"] = score_to_z_score(df["SCORE1_SUM"], mu=args.mu, SD=args.SD)
+    df["SUM_Z"] = score_to_z_score(df["SCORE1_SUM"], mu=args.mu, sd=args.SD)
 
     df.to_csv(args.output, sep="\t", index=False)
 
