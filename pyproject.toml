@@ -40,6 +40,7 @@ extend-select = [
     "ISC", # Detect implicit string concatenation
     "I",   # Enforce import ordering
     "N",   # Enforce PEP 8 naming conventions
+    "PD",  # Enforce some opinionated stances about pandas best practices
     "PT",  # Enforce pytest best practices
     "PTH", # Prefer pathlib over os.path
     "Q",   # Enforce consistent quote style
