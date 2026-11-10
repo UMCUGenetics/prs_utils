@@ -11,7 +11,7 @@ import typer
 app = typer.Typer(add_completion=False, help="Sample QC for PRS pipeline.")
 
 
-def QC_check(
+def qc_check(
     row: pd.Series, expected_ancestry: list[str], conf_threshold: float, model_matchrate: float, matchrate_threshold: float
 ) -> pd.Series:
     """Assign QC status and comments to a single sample row.
@@ -129,7 +129,7 @@ def main(
     model_matchrate = calc_model_matchrate(model_df)
 
     typer.echo(f"Model matchrate:{model_matchrate}")
-    qc_df = combined_df.apply(QC_check, args=(expected_ancestry, conf_threshold, model_matchrate, matchrate_threshold), axis=1)
+    qc_df = combined_df.apply(qc_check, args=(expected_ancestry, conf_threshold, model_matchrate, matchrate_threshold), axis=1)
 
     qc_df["Sample"] = sample
     qc_df["Model"] = model
