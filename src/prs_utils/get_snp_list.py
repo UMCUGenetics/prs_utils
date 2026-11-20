@@ -1,12 +1,24 @@
+"""Create SNP TSV from a scoring file."""
+
 from argparse import ArgumentParser
+from pathlib import Path
 
 import pandas as pd
 
 
 def positions_to_tsv(scoring_file, chr_colname, pos_colname, prefix, flank=100):
+    """Write genomic positions to a TSV file.
+
+    Args:
+        scoring_file: Tab-delimited scoring file path.
+        chr_colname: Column containing chromosome values.
+        pos_colname: Column containing position values.
+        prefix: Prefix for the output filename.
+        flank: Number of bases to include on either side of each position.
+    """
     df = pd.read_csv(scoring_file, sep="\t", comment="#")
 
-    with open(f"{prefix}_snplist.list", "w") as outfile:
+    with Path(f"{prefix}_snplist.list").open("w") as outfile:
         for index, row in df.iterrows():
             chrom = row[chr_colname]
             pos = int(row[pos_colname])
@@ -23,12 +35,20 @@ def positions_to_tsv(scoring_file, chr_colname, pos_colname, prefix, flank=100):
             if "chr" in str(chrom):
                 chr_prefix = ""
 
-            tsv_line = f"{chr_prefix}{chrom}:{str(start)}-{str(end)}\n"
+            tsv_line = f"{chr_prefix}{chrom}:{start}-{end}\n"
 
             outfile.write(tsv_line)
 
 
 def get_opts(argv=None):
+    """Define and parse command-line options.
+
+    Args:
+        argv: Optional command-line arguments.
+
+    Returns:
+        Parsed command-line options.
+    """
     p = ArgumentParser()
     p.add_argument("--scoring_file", help="Custom scoring file, alternative for PGSID", required=True)
     p.add_argument("--flank", help="Flanking region for each position to call variants in.", default=100, type=int)
@@ -38,6 +58,11 @@ def get_opts(argv=None):
 
 
 def main(argv=None):
+    """Convert genomic positions from list to tsv file.
+
+    Args:
+        argv: Optional command-line arguments.
+    """
     args = get_opts(argv)
 
     chr_colname = "hm_chr"
