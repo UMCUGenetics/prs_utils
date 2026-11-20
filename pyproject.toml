@@ -1,6 +1,6 @@
 [project]
 name = "prs-utils"
-version = "1.0.0"
+version = "1.0.1"
 description = "Utility commands used by the UMCUGenetics prsutils Nextflow modules."
 readme = "README.md"
 authors = [
