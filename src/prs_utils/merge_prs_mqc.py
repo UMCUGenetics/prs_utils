@@ -1,4 +1,7 @@
+"""Merge polygenic risk score multiqc results."""
+
 import sys
+from pathlib import Path
 
 import pandas as pd
 
@@ -19,6 +22,13 @@ model_palette = [
 
 
 def _emit_bgcols(out, column, mapping):
+    """Write MultiQC background-color configuration for a column.
+
+    Args:
+        out: Output stream for the configuration text.
+        column: MultiQC table column name.
+        mapping: Mapping of column values to background colors.
+    """
     out.write(f"#     {column}:\n")
     out.write("#         bgcols:\n")
     for key, color in mapping.items():
@@ -26,6 +36,11 @@ def _emit_bgcols(out, column, mapping):
 
 
 def main(argv=None):
+    """Combine PRS multiqc results and write a MultiQC report table.
+
+    Args:
+        argv: Optional input paths; defaults to process arguments.
+    """
     files = list(sys.argv[1:]) if argv is None else list(argv)
 
     dfs = []
@@ -54,7 +69,7 @@ def main(argv=None):
     unique_models = combined["Model"].drop_duplicates().tolist()
     model_bgcols = {m: model_palette[i % len(model_palette)] for i, m in enumerate(unique_models)}
 
-    with open("prs_scores_mqc.tsv", "w") as out:
+    with Path("prs_scores_mqc.tsv").open("w") as out:
         out.write("# id: 'prs-scores'\n")
         out.write("# pconfig:\n")
         out.write("#     only_defined_headers: false\n")
